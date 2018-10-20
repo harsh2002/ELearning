@@ -1,0 +1,179 @@
+﻿@model List<ELearning.Model.StudentModel>
+@using System.IO;
+@using ELearning.helper;
+@{
+    var lstModel = Model;
+    var label = string.Join(",", lstModel.Select(i => i.ModuleName).ToArray());
+    var total = string.Join(",", lstModel.Select(i => i.MarkTotal).ToArray());
+    var secure = string.Join(",", lstModel.Select(i => i.MarkSecure).ToArray());
+    var totalLesson = lstModel.Select(z => z.LessonId).Sum();
+    var completedLesson = lstModel.Select(z => z.LessonCompleted).Sum();
+
+}
+<section id="dashboard">
+    <div class="container">
+        <div class="m-4"></div>
+        <div class="row">
+
+            @foreach (var item in lstModel.Select(i => i.CourseName).Distinct())
+            {
+                //var lstLocal = lstModel.Where(i => i.CourseName == item).Distinct();
+                var imagePath = lstModel.Where(i => i.CourseName == item).First().ImagePath;
+                var id = lstModel.Where(i => i.CourseName == item).First().CourseId;
+
+                int divide = 0;
+                if (totalLesson > 0)
+                {
+                    divide = completedLesson * 100 / totalLesson;//Math.Round((Convert.ToDouble(completedLesson) / Convert.ToDouble(totalLesson)),0);
+                }
+               
+                var style = "width:" + divide + "%;color:#000";
+                <div class="col-lg-4 text-center">
+                    <div class="card">
+                        <div class="card-body">
+                            <a href="@Url.Action("Modules","Student",new { id=id})">
+                                <img class="img-responsive" src="~/ServerImage/@imagePath" />
+                            </a>
+                            <p class="m-2 font-weight-bold">@item</p>
+                            <div class="progress" style="height:30px">
+                                <div class="progress-bar font-weight-bold" style="@style">
+                                    <h6>@divide %</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="col-lg-4 text-center">                
+                <div class="card">
+                    <div class="card-body">
+                        <h4>Total Modules</h4>
+                        <canvas id="modules"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 text-center">                
+                <div class="card">
+                    <div class="card-body">
+                        <h4>Lesson Completed</h4>
+                        <canvas id="lesson"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+        <hr class="star-dark mb-5">
+        <div class="row">
+            <div class="col-lg-12 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <h4>Performance</h4>
+                        <canvas id="chLine"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" value="@label" id="label" />
+    <input type="hidden" value="@total" id="total" />
+    <input type="hidden" value="@secure" id="secure" />
+</section>
+@section Scripts {
+    <script src="~/js/Chart.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            var strTotal = $('#total').val(),
+                numbersTotal = strTotal.split(',').map(Number);
+
+            var strSecure = $('#secure').val(),
+                numbersSecure = strSecure.split(',').map(Number);
+
+            var strLabel = $('#label').val(),
+                stringLabel = strLabel.split(',');
+
+            var chartData = {
+                labels: stringLabel,
+                datasets: [{
+                    data: numbersSecure,
+                    backgroundColor: ["red", "blue", "green", "blue", "red", "blue"],
+                }]
+            };
+
+            var chLine = document.getElementById("chLine");
+            if (chLine) {
+                new Chart(chLine, {
+                    type: 'bar',
+                    data: chartData,
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    steps: 10,
+                                    stepValue: 5,
+                                    max: 100
+                                }
+                            }]
+                        },
+                        legend: {
+                            display: false
+                        }
+                    }
+                });
+            }
+
+
+            var colors = ['#007bff', '#28a745', '#333333', '#c3e6cb', '#dc3545', '#6c757d'];
+
+            /* 3 donut charts */
+            var donutOptions = {
+                cutoutPercentage: 65,
+                legend: { position: 'bottom', padding: 5, labels: { pointStyle: 'circle', usePointStyle: true } }
+            };
+
+            // donut 1
+            var chDonutData1 = {
+                labels: ['Total Lesson', 'Completed Lesson'],
+                datasets: [
+                    {
+                        backgroundColor: colors.slice(0, 3),
+                        borderWidth: 0,
+                        data: [@totalLesson,@completedLesson]
+                    }
+                ]
+            };
+
+            var chDonut1 = document.getElementById("lesson");
+            if (chDonut1) {
+                new Chart(chDonut1, {
+                    type: 'pie',
+                    data: chDonutData1,
+                    options: donutOptions
+                });
+            }
+
+             var chDonutData1 = {
+                labels: ['Total Modules'],
+                datasets: [
+                    {
+                        backgroundColor: colors.slice(0, 3),
+                        borderWidth: 0,
+                        data: [@lstModel.Select(i => i.ModuleName).Distinct().Count()]
+                    }
+                ]
+            };
+
+            var chDonut1 = document.getElementById("modules");
+            if (chDonut1) {
+                new Chart(chDonut1, {
+                    type: 'pie',
+                    data: chDonutData1,
+                    options: donutOptions
+                });
+            }
+
+        });
+    </script>
+}

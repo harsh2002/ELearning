@@ -1,0 +1,65 @@
+﻿@model ELearning.Model.InstituteViewModel
+<section id="student">
+    <div class="container">
+        <div class="m-4"></div>
+        <h4 class="text-uppercase text-secondary mb-1">Student Records</h4>
+        <div class="row">
+            <div class="col-lg-12 mx-auto lead m-0">
+                <div id="accordion">
+                    @foreach (var item in Model.InstituteList.Select(x => x.User.UserId).Distinct())
+                    {
+                        var innerList = Model.InstituteList.Where(x => x.User.UserId == item).ToList();
+
+                        <div class="card">
+                            <div class="card-header">
+                                <a class="card-link" data-toggle="collapse" href="#User_@item">
+                                    @innerList.Select(x => x.User.Name).First()
+                                </a>
+                            </div>
+
+                            <div id="User_@item" class="collapse show" data-parent="#accordion">
+                                <div class="card-body">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                @*<th>Name</th>*@
+                                                <th>Modules</th>
+                                                <th>Lesson</th>
+                                                <th>Test Attempt</th>
+                                                <th>% Obtained (Latest)</th>
+                                                <th>% Obtained (Average)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var record in innerList)
+                                            {
+                                                var percentage = 0;
+                                                if (record.MarkTotal != 0)
+                                                {
+
+                                                    percentage = (int)Math.Round((double)(100 * record.MarkSecure) / record.MarkTotal);
+                                                }
+
+                                            <tr>
+                                                @*<td>@record.User.Name</td>*@
+                                                <td>@record.Module.Name</td>
+                                                <td>@record.Lesson.Completed / @record.Lesson.Total</td>
+                                                <td>@record.Attempt</td>
+                                                <td>@percentage</td>
+                                                <td>@record.MarkAvg</td>
+                                            </tr>
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

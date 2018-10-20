@@ -1,0 +1,178 @@
+﻿@model ELearning.Model.UserModel
+<section id="userprofile">
+    <div class="container">
+        <div class="m-4"></div>
+        <h3 class="text-uppercase text-secondary mb-0">User Profile</h3>
+        <div class="row">
+            @*<div class="col-lg-12 mx-auto lead m-0">*@
+            <div class="col-lg-6">
+                @if (ViewBag.usuccess != null)
+                {
+                    <div class="alert-success">@ViewBag.success</div>
+                }
+                @if (ViewBag.ufailure != null)
+                {
+                    <div class="alert-danger">@ViewBag.failure</div>
+                }
+                <div class="card">
+                    <div class="card-header">
+                        User Profile
+                        <span id="icon" class="fa fa-edit" style="float:right;"></span>
+                    </div>
+                    <div class="card-body">
+                        <table id="showprofile" class="table table-hover">
+                            <tbody>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>
+                                        <div class="form-group floating-label-form-group controls mb-0">
+                                            @Model.Name
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Email</td>
+                                    <td>
+                                        <div class="form-group floating-label-form-group controls mb-0">
+                                            @Model.Email
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <form method="post" action="@Url.Action("UserProfile", "Student")">
+                            <table id="editprofile" class="table table-hover" style="display:none;">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="control-group">
+                                                <div class="form-group floating-label-form-group controls mb-0">
+                                                    <label>Name</label>
+                                                    <input class="form-control" name="name" value=" @Model.Name" type="text" placeholder="Enter Name" required="required" data-validation-required-message="Please enter your name.">
+                                                </div>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="control-group">
+                                                <div class="form-group floating-label-form-group controls mb-0">
+                                                    <label>Email</label>
+                                                    <input class="form-control" name="email" value=" @Model.Email" type="email" placeholder="Enter Email Address" required="required" data-validation-required-message="Please enter your email address.">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-primary btn-xl">Update</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <form method="post" action="@Url.Action("ChangePassword", "Student")">
+                    @if (ViewBag.success != null)
+                    {
+                        <div class="alert-success">@ViewBag.success</div>
+                    }
+                    @if (ViewBag.failure != null)
+                    {
+                        <div class="alert-danger">@ViewBag.failure</div>
+                    }
+                    <div class="card">
+                        <div class="card-header">Change Password</div>
+                        <div class="card-body">
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="control-group">
+                                                <div class="form-group floating-label-form-group controls mb-0">
+                                                    <label>Old Password</label>
+                                                    <input class="form-control" name="opassword" type="password" placeholder="Enter old password" required="required" data-validation-required-message="Please enter old password.">
+                                                </div>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="control-group">
+                                                <div class="form-group floating-label-form-group controls mb-0">
+                                                    <label>New Password</label>
+                                                    <input class="form-control" name="npassword" type="password" placeholder="Enter new password" required="required" data-validation-required-message="Please enter new password.">
+                                                </div>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="control-group">
+                                                <div class="form-group floating-label-form-group controls mb-0">
+                                                    <label>Confirm New Password</label>
+                                                    <input class="form-control" name="cnpassword" type="password" placeholder="Enter confirm new password" required="required" data-validation-required-message="Please confirm new password.">
+                                                </div>
+                                                <p class="help-block text-danger" style="display:none;" id="eerror">
+                                                    New password and cofirm new password are not matched.
+
+                                                </p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-primary btn-xl" id="update">Update</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            @*</div>*@
+        </div>
+    </div>
+</section>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var toggle = false;
+            $('#icon').click(function () {
+                if (toggle== false) {
+                    $('#showprofile').attr('style', 'display:none');
+                    $('#editprofile').attr('style', 'display:display');
+                    $(this).removeClass('fa-edit').addClass('fa-remove');
+                }
+                else {
+                    $('#showprofile').attr('style', 'display:display');
+                    $('#editprofile').attr('style', 'display:none');
+                    $(this).removeClass('fa-remove').addClass('fa-edit');
+                }
+                toggle = !toggle;
+            });
+
+            $('#update').click(function(){
+                if ($('#npassword').val() !== $('#cnpassword').val()) {
+                    $('#eerror').attr('style', 'display:block;');
+                    return false;
+                }
+            });
+        });
+
+    </script>
+}

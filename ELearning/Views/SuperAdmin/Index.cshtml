@@ -1,0 +1,78 @@
+﻿@model ELearning.Model.AdminConfigurationViewModel;
+<section id="dashboard">
+    <div class="container">
+        @*<h2 class="text-center text-uppercase text-secondary mb-0">Login</h2>*@
+        <div class="m-5"></div>
+        <div class="row">
+            <div class="col-lg-6 lead m-0">
+                <h3>Course</h3>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                    </tr>
+                    @foreach (var item in Model.CourseList)
+                    {
+                        <tr>
+                            <td>@item.CourseId</td>
+                            <td>@item.Name</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+
+            <div class="col-lg-6 lead m-0">
+                <h3>Modules</h3>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                    </tr>
+                    @foreach (var item in Model.ModuleList)
+                    {
+                        <tr>
+                            <td>@item.ModuleId</td>
+                            <td>@item.Name</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+
+            <div class="col-lg-6 lead m-0">
+                <h3>Lessons</h3>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                    </tr>
+                    @foreach (var item in Model.LessonList)
+                    {
+                        <tr>
+                            <td>@item.LessonId</td>
+                            <td>@item.Name</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+
+            <div class="col-lg-6 lead m-0">
+                <h3>Institutes</h3>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                    </tr>
+                    @foreach (var item in Model.InstituteList)
+                    {
+                        <tr>
+                            <td>@item.InstituteId</td>
+                            <td>@item.Name</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+</section>

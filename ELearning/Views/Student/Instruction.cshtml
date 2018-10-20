@@ -1,0 +1,50 @@
+﻿
+@{
+    Layout = "_TestPartial";
+}
+
+<section id="dashboard">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <form method="post" action="@Url.Action("UserTest","Student")">
+                    <div class="col-lg-8 lead m-0">
+                        <h3>Instruction</h3>
+                        <table class="table table-bordered">
+                            <tr>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><a href="@Url.Action("UserTest","Student",new {id=ViewBag.Id })" class="btn btn-success">Start</a></td>
+                            </tr>
+                        </table>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-4"></div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $(document).bind("contextmenu", function (e) {
+                return false;
+            });
+
+        });
+    </script>
+}

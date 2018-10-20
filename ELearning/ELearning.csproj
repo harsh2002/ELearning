@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\Videos\**" />
+    <Content Remove="wwwroot\Videos\**" />
+    <EmbeddedResource Remove="wwwroot\Videos\**" />
+    <None Remove="wwwroot\Videos\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ELearning.BAL\ELearning.BAL.csproj" />
+    <ProjectReference Include="..\ELearning.Model\ELearning.Model.csproj" />
+    <ProjectReference Include="..\ELearning.Utility\ELearning.Utility.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Documents\TestImage\" />
+    <Folder Include="wwwroot\ServerImage\" />
+  </ItemGroup>
+
+</Project>

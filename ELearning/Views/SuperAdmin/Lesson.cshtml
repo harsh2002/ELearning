@@ -1,0 +1,96 @@
+﻿@model ELearning.Model.CourseViewModel
+<section id="content">
+    <div class="container">
+        <br /><br />
+        <div class="col-lg-12 mx-auto">
+            @if (ViewBag.success != null)
+            {
+                <div class="alert alert-success">@ViewBag.success</div>
+            }
+            @if (ViewBag.failure != null)
+            {
+                <div class="alert alert-danger">@ViewBag.failure</div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <h3>Lesson</h3>
+                <form method="post" enctype="multipart/form-data" action="@Url.Action("Lesson", "SuperAdmin")">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>
+                                <div class="control-group">
+                                    <div class="form-group controls mb-0 pb-2">
+                                        <label>Enter Lesson</label>
+                                        <select name="moduleid" class="form-control">
+                                            <option>Select</option>
+                                            @if (Model.ModuleList != null)
+                                            {
+                                                foreach (var item in Model.ModuleList)
+                                                {
+                                                    <option value="@item.ModuleId">@item.Name</option>
+                                                }
+                                            }
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="control-group">
+                                    <div class="form-group floating-label-form-group controls mb-0 pb-2">
+                                        <label>Enter Lesson</label>
+                                        <input class="form-control" name="lname" type="text" placeholder="Lesson Text" required="required" data-validation-required-message="Please enter your lesson name.">
+                                        <p class="help-block text-danger"></p>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="control-group">
+                                    <div class="form-group floating-label-form-group controls mb-0 pb-2">
+                                        <label>Video Description</label>
+                                        <input class="form-control" name="vname" type="text" placeholder="Video description" required="required" data-validation-required-message="Please enter your lesson name.">
+                                        <p class="help-block text-danger"></p>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="control-group">
+                                    <div class="form-group floating-label-form-group controls mb-0 pb-2">
+                                        <label>Upload Video</label>
+                                        <input class="form-control" name="file" type="file" placeholder="upload Video" required="required" data-validation-required-message="Please select video of the lesson">
+                                        <p class="help-block text-danger"></p>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="control-group">
+                                    <div class="form-group floating-label-form-group controls mb-0 pb-2">
+                                        <label>Video Length</label>
+                                        <input class="form-control" name="vlength" type="text" placeholder="Video length" required="required" data-validation-required-message="please enter video length">
+                                        <p class="help-block text-danger"></p>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-xl" id="btnlesson">Save</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

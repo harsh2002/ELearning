@@ -1,0 +1,72 @@
+﻿@model ELearning.Model.CourseViewModel
+<section id="content">
+    <div class="container">
+        <br /><br />
+        <div class="col-lg-12 mx-auto">
+            @if (ViewBag.success != null)
+            {
+                <div class="alert alert-success">@ViewBag.success</div>
+            }
+            @if (ViewBag.failure != null)
+            {
+                <div class="alert alert-danger">@ViewBag.failure</div>
+            }
+        </div>
+        <div class="col-lg-6">
+            <h3>Module List</h3>
+            <form enctype="multipart/form-data" method="post" action="@Url.Action("Module", "SuperAdmin")">
+                <table class="table table-bordered">
+                    <tr>
+                        <td>
+                            <div class="control-group">
+                                <div class="form-group controls mb-0 pb-2">
+                                    <label>Enter Module</label>
+                                    <select name="courseid" class="form-control">
+                                        <option>Select</option>
+                                        @if (Model.CourseList != null)
+                                        {
+                                            foreach (var item in Model.CourseList)
+                                            {
+                                                <option value="@item.CourseId">@item.Name</option>
+                                            }
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="control-group">
+                                <div class="form-group floating-label-form-group controls mb-0 pb-2">
+                                    <label>Enter Module</label>
+                                    <input class="form-control" name="mname" id="module" type="text" placeholder="Module Name" required="required" data-validation-required-message="Please enter your module name.">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="control-group">
+                                <div class="form-group controls mb-0 pb-2">
+                                    <label>upload Module</label>
+                                    <input class="form-control" name="file" id="modulefile" type="file" placeholder="upload module" required="required" data-validation-required-message="Please select module">
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-xl" id="btnmodule">Save</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+
+    </div>
+</section>

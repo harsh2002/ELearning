@@ -1,0 +1,41 @@
+﻿@model List<ELearning.Model.TestModel>
+<section id="content">
+    <div class="container">
+        <br />
+        <div class="m-4"></div>
+        <div class="col-lg-12 mx-auto">
+            <div class="col-lg-8 lead m-0">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#Test Id</th>
+                            <th>Module</th>
+                            <th></th>
+                            <th>Question</th>
+                            <th>Answer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.TestId</td>
+                                <td>@item.Module.Name</td>
+                                <td>
+                                    @if (item.Image != null)
+                                    {
+                                        <img src="data:image/png;base64,@Convert.ToBase64String(item.Image, 0, item.Image.Length)" class="img-fluid" />
+                                    }
+                                    
+                                </td>
+                                <td>@item.Question</td>
+                                <td>@item.Answer</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,289 @@
+﻿@{
+    ViewData["Title"] = "UserTest";
+    Layout = "_TestPartial";
+}
+@model List<ELearning.Model.TestModel>
+@if (Model.Count > 0)
+{
+    <input type="hidden" id="totalques" value="@Model.Count()" />
+    <div class="container" style="display:none;" id="testscreen">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <h3>Module: @Model.Select(i => i.Module.Name).FirstOrDefault() </h3>
+                    </div>
+                    <div class="col-lg-4">
+                        <div id="countdowntimer"><span id="hms_timer"></span></div>
+                    </div>
+
+                    <div class="col-md-8 mx-auto">
+                        <form method="post" action="@Url.Action("UserTest", "Student")">
+                            @{
+                                int qi = 1;
+                            }
+                            @foreach (var item in Model)
+                            {
+                                @if (qi == 1)
+                                {
+                                    <div id="ques-@qi">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h3>Question @qi:</h3>
+                                                @if (item.Image != null)
+                                                {
+                                                    <img src="data:image/png;base64,@Convert.ToBase64String(item.Image, 0, item.Image.Length)" class="img-fluid" />
+                                                }
+                                                else
+                                                {
+                                                    <h6>@item.Question</h6>
+                                                }
+                                                <div class="m-4"></div>
+                                                <div class="alert alert-danger" id="danger-@qi" style="display:none;">Please select anyone option</div>
+                                                <span class="btn btn-block btn-outline-primary text-left m-1">
+                                                    <span>A. </span> <input type="radio" id="for-a-@qi" name="Radio-@qi" value="a" data-tid="@item.TestId" />
+                                                    <label for="for-a-@qi">@item.OptionA</label>
+                                                </span>
+                                                <span class="btn btn-block btn-outline-primary text-left m-1">
+                                                    <span>B. </span> <input type="radio" id="for-b-@qi" name="Radio-@qi" value="b" data-tid="@item.TestId" />
+                                                    <label for="for-b-@qi">@item.OptionB</label>
+                                                </span>
+                                                @if (!string.IsNullOrEmpty(item.OptionC))
+                                                {
+                                                    <span class="btn btn-block btn-outline-primary text-left m-1">
+                                                        <span>C. </span> <input type="radio" id="for-c-@qi" name="Radio-@qi" value="c" data-tid="@item.TestId" />
+                                                        <label for="for-c-@qi">@item.OptionC</label>
+                                                    </span>
+                                                }
+                                                @if (!string.IsNullOrEmpty(item.OptionD))
+                                                {
+                                                    <span class="btn btn-block btn-outline-primary text-left m-1">
+                                                        <span>D. </span> <input type="radio" id="for-d-@qi" name="Radio-@qi" value="c" data-tid="@item.TestId" />
+                                                        <label for="for-d-@qi">@item.OptionD</label>
+                                                    </span>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div id="ques-@qi" style="display:none;">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h3>Question @qi:</h3>
+                                                @if (item.Image != null)
+                                                {
+                                                    <img src="data:image/png;base64,@Convert.ToBase64String(item.Image, 0, item.Image.Length)" class="img-fluid" />
+                                                }
+                                                else
+                                                {
+                                                    <h6>
+                                                        @item.Question
+                                                    </h6>
+                                                }
+                                                <div class="m-4"></div>
+                                                <div class="alert alert-danger" id="danger-@qi" style="display:none;">Please select anyone option</div>
+                                                <span class="btn btn-block btn-outline-primary text-left m-1">
+                                                    <span>A. </span>  <input type="radio" id="for-a-@qi" name="Radio-@qi" value="a" data-tid="@item.TestId" />
+                                                    <label for="for-a-@qi">@item.OptionA</label>
+                                                </span>
+                                                <span class="btn btn-block btn-outline-primary text-left m-1">
+                                                    <span>B. </span><input type="radio" id="for-b-@qi" name="Radio-@qi" value="b" data-tid="@item.TestId" />
+                                                    <label for="for-b-@qi">@item.OptionB</label>
+                                                </span>
+                                                @if (!string.IsNullOrEmpty(item.OptionC))
+                                                {
+                                                    <span class="btn btn-block btn-outline-primary text-left m-1">
+                                                        <span>C. </span><input type="radio" id="for-c-@qi" name="Radio-@qi" value="c" data-tid="@item.TestId" />
+                                                        <label for="for-c-@qi">@item.OptionC</label>
+                                                    </span>
+                                                }
+                                                @if (!string.IsNullOrEmpty(item.OptionD))
+                                                {
+                                                    <span class="btn btn-block btn-outline-primary text-left m-1">
+                                                        <span>D. </span><input type="radio" id="for-d-@qi" name="Radio-@qi" value="c" data-tid="@item.TestId" />
+                                                        <label for="for-d-@qi">@item.OptionD</label>
+                                                    </span>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                                qi = qi + 1;
+
+                            }
+                            <div class="m-1"></div>
+                            <input type="button" class="btn btn-success" id="next" value="Next" />
+
+                        </form>
+                    </div>
+                    <div class="col-md-4">
+                        <ul class="list-group">
+                            @{
+                                for (int i = 1; i <= Model.Count; i++)
+                                {
+                                    <li class="list-group-item" id="li-@i">@i</li>
+                                }
+                            }
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+
+    <div class="container">
+        <div id="loading" class="d-none">
+            <ul class="bokeh">
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+        <div class="row" id="final" style="display:none;">
+            <div class="col-md-12 mx-auto">
+                <div class="card">
+                    <div class="card-body text-lg-center">
+                        <h2>You have completed test successfully, Thank You for selecting his portal.</h2>
+                        <h4><a href="@Url.Action("Index","Student")">Click here</a></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="instruction">
+        <div class="row">
+            <div class="col-lg-12 lead m-0">
+                <div class="card">
+                    <div class="card-body text-lg-center">
+                        <h3>Instructions</h3>
+                        <table class="table table-borderless table-hover text-left">
+                            <tr>
+                                <td>1. Test duration will be 30 minutes. </td>
+                            </tr>
+                            <tr>
+                                <td>2. All questions are mandatory to be attempt.</td>
+                            </tr>
+                            <tr>
+                                <td>3. There is no back button, once the quesion is completed, you will be not able to modify option again.</td>
+                            </tr>
+                            <tr>
+                                <td>4. If you will not able to complete test within 30 minues then automacally test will be submitted.</td>
+                            </tr>
+                            <tr>
+                                <td>5. Timer will start just after clicking 'Start' button</td>
+                            </tr>
+                            <tr>
+                                <td><a id="start" class="btn btn-primary" style="color:#fff;">Start</a></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+else
+{
+    <div class="container">       
+        <div class="row ">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body text-lg-center">
+                        <h3>Please complete all lessons of this module before assessment!</h3>
+                        <h4><a href="@Url.Action("Index","Student")" id="afinalclick">Click here</a></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        var modid=@ViewBag.Id;
+        $(document).ready(function () {
+            $(document).bind("contextmenu", function (e) {
+                return false;
+            });
+            function disableF5(e) { if ((e.which || e.keyCode) == 116) e.preventDefault(); };
+            $(document).on("keydown", disableF5);
+
+            $('#start').click(function () {
+                $('#testscreen').attr('style', 'display:block');
+                $('#instruction').attr('style', 'display:none');
+                $("#hms_timer").countdowntimer({
+                    hours: 00,
+                    minutes: 05,
+                    seconds: 00,
+                    size: "lg",
+                    pauseButton: "pauseBtnhms",
+                    stopButton: "stopBtnhms",
+                    timeUp: timeisUp
+                });
+            });
+
+            var i = 1;
+            var total=@Model.Count;
+            var arrtestId = [];
+            var arranswer = [];
+            $('#next').click(function () {
+                if ((total-1) == i) {
+                    $(this).val('Submit');
+                }
+                if (total == i) {
+
+                    arrtestId.push($('input[name=Radio-' + i + ']:checked').attr('data-tid'));
+                    arranswer.push($('input[name=Radio-' + i + ']:checked').val());
+
+                    //$('#testscreen').html('');
+                    //$('#final').attr('style', 'dispaly:block');
+
+                    submitTest(arranswer, arrtestId);
+                    return;
+                }
+                var val = $('input[name=Radio-' + i + ']:checked').val();
+                if (typeof (val) !== 'undefined') {
+                    arrtestId.push($('input[name=Radio-' + i + ']:checked').attr('data-tid'));
+                    arranswer.push($('input[name=Radio-' + i + ']:checked').val());
+                    $('#ques-' + i).attr('style', 'display:none');
+                    $('#li-' + i).attr('style', 'background-color:YellowGreen');
+                    i++;
+                    $('#ques-' + i).attr('style', 'display:block');
+                }
+                else {
+                    $('#danger-'+i).attr('style', 'display:block;');
+                    setTimeout(function () {
+                        $(this).attr('style', 'display:none;');
+                    }, 8000);
+                }
+            });
+
+            function submitTest() {
+                var body = {
+                    'Answer': arranswer,
+                    'TestId': arrtestId,
+                    'ModuleId': modid,
+                    'Total': $('#totalques').val()
+                };
+                $('#testscreen').html('');
+                $('#loading').removeClass('d-none').addClass('d-block');
+
+                $.post(window.location.origin + "/Student/SubmitTest", body, function (data) {
+                    $('#loading').removeClass('d-block').addClass('d-none');
+                    $('#final').attr('style', 'dispaly:block');
+
+                });
+            }
+            function timeisUp() {
+                submitTest();
+            }
+        });
+    </script>
+}

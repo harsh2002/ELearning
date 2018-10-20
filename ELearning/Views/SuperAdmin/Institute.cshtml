@@ -1,0 +1,161 @@
+﻿@model ELearning.Model.CourseInstituteViewModel
+<section id="inst">
+    <div class="container">        
+        <div class="row">
+            <div class="m-4"></div>
+            <div class="col-lg-12">
+                @if (ViewBag.success != null)
+                {
+                    <div class="alert alert-success">@ViewBag.success</div>
+                }
+                @if (ViewBag.failure != null)
+                {
+                    <div class="alert alert-danger">@ViewBag.failure</div>
+                }
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h3>Corporate </h3>
+                        <form enctype="multipart/form-data" method="post" action="@Url.Action("Institute", "SuperAdmin")">
+
+                            <div class="control-group">
+                                <div class="form-group floating-label-form-group controls mb-0 pb-2">
+                                    <label>Name of Istitute</label>
+                                    <input class="form-control" name="iname" type="text" placeholder="Enter name of institute" required="required" data-validation-required-message="Please enter institute name.">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="form-group floating-label-form-group controls mb-0 pb-2">
+                                    <label>User Name</label>
+                                    <input class="form-control" name="uname" type="text" placeholder="Enter user name" required="required" data-validation-required-message="Please enter User Name.">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="form-group floating-label-form-group controls mb-0 pb-2">
+                                    <label>Email Address of Admin</label>
+                                    <input class="form-control" name="ename" type="email" placeholder="Enter admin email address" required="required" data-validation-required-message="Please enter email of admin.">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="form-group floating-label-form-group controls mb-0 pb-2">
+                                    <label>Subscription</label>
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <td>
+                                                <select name="year" class="form-control" placeholder="Select year" required="required">
+                                                    <option>Select year</option>
+                                                    @for (int i = 0; i <= 12; i++)
+                                                    {
+                                                        <option value="@i">@i</option>
+                                                    }
+
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select name="month" class="form-control" placeholder="Select month" required="required">
+                                                    <option>Select month</option>
+                                                    @for (int i = 0; i <= 12; i++)
+                                                    {
+                                                        <option value="@i">@i</option>
+                                                    }
+                                                    }
+
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <div class="form-group floating-label-form-group controls mb-0 pb-2">
+                                    <label>Enter number of students be to activated</label>
+                                    <input class="form-control" name="nname" type="number" placeholder="Enter name of total number" required="required" data-validation-required-message="Please enter number.">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-xl" id="btnInstitute">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h3>Map Course </h3>
+                        <form method="post" action="@Url.Action("MapCourse", "SuperAdmin")">
+                            <div class="control-group">
+                                <div class="form-group controls mb-0 pb-2">
+                                    <label>Map Course to Institute</label>
+                                    <select name="courseid" class="form-control">
+                                        <option>Select Course</option>
+                                        @if (Model.CourseList != null)
+                                        {
+                                            foreach (var item in Model.CourseList)
+                                            {
+                                                <option value="@item.CourseId">@item.Name</option>
+                                            }
+                                        }
+
+                                    </select>
+                                </div>
+                                <div class="form-group controls mb-0 pb-2">
+                                    <label>MNap Course to Institute</label>
+                                    <select name="instituteid" class="form-control">
+                                        <option>Select Institute</option>
+                                        @if (Model.InstituteList != null)
+                                        {
+                                            foreach (var item in Model.InstituteList)
+                                            {
+                                                <option value="@item.InstituteId">@item.Name</option>
+                                            }
+                                        }
+
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-xl" id="btnmapCourse">Save</button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Institute Id</th>
+                            <th>Institute Name</th>
+                            <th>Courses Mapped</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+</section>

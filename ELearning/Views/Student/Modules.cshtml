@@ -1,0 +1,110 @@
+﻿@model List<ELearning.Model.StudentViewModel>
+<section id="assessment">
+    <div class="container">
+        <div class="m-4"></div>
+        <div class="row">
+            <div class="col-lg-6"><h3>Modules Information</h3></div>
+            <div class="col-lg-6 text-lg-right">
+                <span class="fa fa-arrow-circle-left" style="font-size:2rem;" id="spback"></span>
+            </div>
+        </div>
+        <div class="col-lg-12 lead m-0">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                @*<th>Module Id</th>*@
+                                <th>Module Name</th>
+                                <th>Lesson</th>
+                                <th>Test Completed</th>
+                                <th>Download</th>
+                                <th>Test Attempt</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    @*<td>@item.Module.ModuleId</td>*@
+                                    <td>
+                                        <a href="@Url.Action("Training","Student",new { mid = item.Module.ModuleId })">
+                                            <span class="fa fa-caret-right"></span>
+                                            @item.Module.Name
+                                        </a>
+                                    </td>
+                                    <td>@item.LessonCompleted / @item.TotalLesson</td>
+                                    @if (item.TestCompleted > 0)
+                                    {
+                                        <td><span class="fa fa-check" style="color:green"></span></td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    <td>
+                                        @if (item.Module.ModuleFile != "")
+                                        {
+                                            <span class="fa fa-download" style="cursor:pointer;" data-name="@item.Module.ModuleFile"></span>
+                                        }
+
+                                    </td>
+
+                                    <td>@item.Attempt</td>
+                                    <td align="right">
+                                        <a href="@Url.Action("UserTest","Student",new {id= item.Module.ModuleId})"
+                                           class="btn btn-info btn-lg">
+                                            <span class="fa fa-caret-right"></span>
+                                            Assessment
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        <div id="loading" class="d-none">
+            <ul class="bokeh">
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            $('#spback').click(function () {
+                history.go(-1);
+            });
+
+            $(document).bind("contextmenu", function (e) {
+                return false;
+            });
+            function disableF5(e) { if ((e.which || e.keyCode) == 116) e.preventDefault(); };
+            $(document).on("keydown", disableF5);
+
+            $('.fa-download').click(function () {
+                $('#loading').removeClass('d-none').addClass('d-block');
+                //$.get(window.location.origin + "/Student/FileDownload?name="+$(this).attr('data-name') , function (data) {
+                //    $('#loading').removeClass('d-block').addClass('d-none');
+                //});
+
+                window.location.href = "@Url.RouteUrl(new
+                                   { Controller = "Student", Action = "FileDownload" })/?name=" + $(this).attr('data-name');
+
+                setTimeout(function () {
+                    $('#loading').removeClass('d-block').addClass('d-none');
+                }, 4000);
+            });
+
+        });
+    </script>
+}

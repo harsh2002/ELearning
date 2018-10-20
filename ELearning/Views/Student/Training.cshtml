@@ -1,0 +1,106 @@
+﻿@model List<ELearning.Model.StudentModel>
+@using System.IO;
+@{
+    var lstModel = Model;
+}
+<section id="training">
+    <div class="container">
+        <div class="m-4"></div>
+        <div class="row">
+
+            <div class="col-lg-6"><h3>@lstModel.First().ModuleName</h3></div>
+            <div class="col-lg-6 text-lg-right">             
+             <span class="fa fa-arrow-circle-left" style="font-size:2rem;" id="spback"></span>               
+            </div>
+
+            <div class="col-md-4" id="videoplay">
+                <div class="card">
+                    <div class="card-body">
+                        <button class="close-right" id="slideleft">
+                            <span class="fa fa-remove"></span>
+                        </button>
+
+                        @foreach (var item in lstModel)
+                        {
+                            <a href="#" class="text-left btn btn-block btn-info btn-lg" data-iscomp="@item.IsCompleted" data-lid="@item.LessonId" data-src="@Url.Action("GetVideo","Student",new { name=@item.FilePath})">
+                                @if (item.IsCompleted)
+                                {
+                                    <span class="fa fa-check"></span>
+                                }
+                                @item.LessonName
+                                <span class="fa fa-caret-right" style="float:right"></span>
+                            </a>
+                        }
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-8" id="videoscreen">
+                <div class="card">
+                    <div class="card-body">
+                        <button class="close-left" id="slideright" style="display:none;">
+                            <span class="fa fa-bars"></span>
+                        </button>
+                        <input type="hidden" id="hidlessonid" value="@lstModel.First().LessonId" />
+
+                        <video width="100%" controls id="myVideo">
+
+                            @*<source src="~/Videos/@lstModel.First().FilePath" type="video/mp4">*@
+                            <source src="@Url.Action("GetVideo","Student",new { name=@lstModel.First().FilePath})" type="video/mp4">
+                            Your browser does not support HTML5 video.
+                        </video>
+                    </div>
+                </div>
+            </div>
+            @*</div>*@
+            @*</div>*@
+
+        </div>
+    </div>
+    <hr class="star-dark mb-5">
+</section>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#spback').click(function () {
+                history.go(-1);
+            });
+
+            $(document).bind("contextmenu", function (e) {
+                return false;
+            });
+
+            $('#slideleft').click(function () {
+                $('#videoplay').attr('style', 'display:none');
+                $('#videoscreen').removeClass('col-md-8').addClass('col-md-12');
+                $('#slideright').attr('style', 'display:block');
+            });
+
+            $('#slideright').click(function () {
+                $('#videoplay').attr('style', 'display:block');
+                $('#videoscreen').removeClass('col-md-12').addClass('col-md-8');
+                $(this).attr('style', 'display:none');
+            });
+
+            $('#videoplay a').click(function () {
+                var vsrc = $(this).attr('data-src');
+                var base_url = vsrc;
+                $("#myVideo").attr('src', base_url);
+                $('#hidlessonid').val($(this).attr('data-lid'));
+            });
+
+            var vid = document.getElementById("myVideo");
+            vid.onended = function () {
+                callAjax();
+            };
+        });
+
+        function callAjax() {
+            var body = {
+                'Lessonid': $('#hidlessonid').val()
+            };
+            $.post(window.location.origin + "/Student/UpdateLessonStatus", body, function (data) {
+            });
+        }
+    </script>
+}
